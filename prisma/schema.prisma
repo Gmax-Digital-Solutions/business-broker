@@ -12,6 +12,63 @@ datasource db {
   provider = "postgresql"
 }
 
+enum CommercialPropertyType {
+  MULTIFAMILY
+  OFFICE
+  INDUSTRIAL
+  RETAIL
+  LAND
+  OTHER
+
+  @@map("commercial_property_type")
+}
+
+enum CommercialTransactionType {
+  SALE
+  LEASE
+
+  @@map("commercial_transaction_type")
+}
+
+enum FranchisePathway {
+  CONSULTING
+  SINGLE_UNIT
+  MASTER_FRANCHISE
+  AREA_DEVELOPMENT
+  RESALE
+  CONVERSION
+
+  @@map("franchise_pathway")
+}
+
+enum FranchiseMarket {
+  SARASOTA
+  MANATEE
+  SOUTHWEST_FLORIDA
+  OTHER
+
+  @@map("franchise_market")
+}
+
+enum FranchiseCapitalBand {
+  UNDECIDED
+  UNDER_150K
+  FROM_150K_TO_350K
+  FROM_350K_TO_750K
+  OVER_750K
+
+  @@map("franchise_capital_band")
+}
+
+enum FranchiseTimeframe {
+  IMMEDIATE
+  WITHIN_SIX_MONTHS
+  WITHIN_TWELVE_MONTHS
+  RESEARCHING
+
+  @@map("franchise_timeframe")
+}
+
 model BusinessListing {
   id          String   @id @default(cuid())
   slug        String   @unique
@@ -77,4 +134,82 @@ model SellerValuationRequest {
 
   @@index([createdAt])
   @@map("seller_valuation_requests")
+}
+
+model CommercialProperty {
+  id               String                    @id @default(cuid())
+  slug             String                    @unique
+  title            String
+  propertyType     CommercialPropertyType    @map("property_type")
+  county           String
+  summary          String
+  transactionType  CommercialTransactionType @map("transaction_type")
+  buildingAreaSqFt Int?                      @map("building_area_sq_ft")
+  featured         Boolean                   @default(false)
+  sortOrder        Int                       @default(0) @map("sort_order")
+  status           String                    @default("ACTIVE")
+  createdAt        DateTime                  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt        DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status, featured, sortOrder])
+  @@index([status, propertyType, sortOrder])
+  @@index([status, county, sortOrder])
+  @@index([status, transactionType, sortOrder])
+  @@index([status, buildingAreaSqFt])
+  @@map("commercial_properties")
+}
+
+model CommercialPropertyInquiry {
+  id             String                 @id @default(cuid())
+  fullName       String                 @map("full_name")
+  email          String
+  phone          String?
+  propertyType   CommercialPropertyType @map("property_type")
+  area           String
+  sizeRange      String?                @map("size_range")
+  capitalRange   String?                @map("capital_range")
+  message        String?
+  contactConsent Boolean                @map("contact_consent")
+  createdAt      DateTime               @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([createdAt])
+  @@map("commercial_property_inquiries")
+}
+
+model FranchiseOpportunity {
+  id        String          @id @default(cuid())
+  slug      String          @unique
+  title     String
+  pathway   FranchisePathway
+  sector    String
+  market    FranchiseMarket
+  summary   String
+  featured  Boolean         @default(false)
+  status    String          @default("ACTIVE")
+  sortOrder Int             @default(0) @map("sort_order")
+  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status, featured, sortOrder])
+  @@index([status, pathway, sortOrder])
+  @@index([status, sector, sortOrder])
+  @@index([status, market, sortOrder])
+  @@map("franchise_opportunities")
+}
+
+model FranchiseStrategyRequest {
+  id               String               @id @default(cuid())
+  fullName         String               @map("full_name")
+  email            String
+  phone            String?
+  preferredPathway FranchisePathway     @map("preferred_pathway")
+  market           FranchiseMarket
+  sector           String
+  capitalBand      FranchiseCapitalBand @map("capital_band")
+  timeframe        FranchiseTimeframe
+  contactConsent   Boolean              @map("contact_consent")
+  createdAt        DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([createdAt])
+  @@map("franchise_strategy_requests")
 }
