@@ -69,6 +69,24 @@ enum FranchiseTimeframe {
   @@map("franchise_timeframe")
 }
 
+enum InvestorVisaPathway {
+  E2
+  EB5_DIRECT
+  EB5_REGIONAL_CENTER
+  L1A
+  UNDECIDED
+
+  @@map("investor_visa_pathway")
+}
+
+enum InvestorBusinessPlan {
+  ACQUIRE_BUSINESS
+  START_BUSINESS
+  RESEARCHING
+
+  @@map("investor_business_plan")
+}
+
 model BusinessListing {
   id          String   @id @default(cuid())
   slug        String   @unique
@@ -177,18 +195,18 @@ model CommercialPropertyInquiry {
 }
 
 model FranchiseOpportunity {
-  id        String          @id @default(cuid())
-  slug      String          @unique
+  id        String           @id @default(cuid())
+  slug      String           @unique
   title     String
   pathway   FranchisePathway
   sector    String
   market    FranchiseMarket
   summary   String
-  featured  Boolean         @default(false)
-  status    String          @default("ACTIVE")
-  sortOrder Int             @default(0) @map("sort_order")
-  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  featured  Boolean          @default(false)
+  status    String           @default("ACTIVE")
+  sortOrder Int              @default(0) @map("sort_order")
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@index([status, featured, sortOrder])
   @@index([status, pathway, sortOrder])
@@ -212,4 +230,18 @@ model FranchiseStrategyRequest {
 
   @@index([createdAt])
   @@map("franchise_strategy_requests")
+}
+
+model InvestorVisaConsultationRequest {
+  id             String               @id @default(cuid())
+  fullName       String               @map("full_name")
+  email          String
+  phone          String?
+  pathway        InvestorVisaPathway
+  businessPlan   InvestorBusinessPlan @map("business_plan")
+  contactConsent Boolean              @map("contact_consent")
+  createdAt      DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  @@index([createdAt])
+  @@map("investor_visa_consultation_requests")
 }
