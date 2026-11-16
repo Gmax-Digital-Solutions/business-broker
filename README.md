@@ -20,6 +20,18 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Seed the concept demo data
+
+To load the Business Broker World sample datasets into the configured Prisma database:
+
+```bash
+npx prisma db seed
+# or
+npm run seed
+```
+
+The seed is deterministic (`faker.seed(42)`), idempotent, and only removes records created with the `BBW-` ID prefix before re-inserting the sample businesses, commercial properties, and franchise opportunities.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Sample image</title>
+  <desc id="desc">Sample property or business placeholder for a Business Broker World concept demo.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <g stroke="#D97706" stroke-width="12" fill="none" opacity="0.9">
+    <path d="M120 520 L270 390 L420 512 L520 355 L710 520 L860 284 L1040 520 L1040 640 L120 640 Z"/>
+    <circle cx="315" cy="240" r="64"/>
+    <path d="M675 210 L860 210 L940 340 L690 340 Z"/>
+    <path d="M230 170 L310 110 L400 170"/>
+  </g>
+  <text x="600" y="710" fill="#F8FAFC" font-size="54" font-family="Arial, Helvetica, sans-serif" text-anchor="middle" letter-spacing="2">Sample image</text>
+</svg>
